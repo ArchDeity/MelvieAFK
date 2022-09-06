@@ -1,0 +1,155 @@
+import java.util.Scanner;
+
+public class Melvor_AFK {
+	public static void main(String[] args) {
+	
+	System.out.print("Melvor IDLE AFK training Calculator"+"\n"+"The easiest way to see if you can AFK train something.");
+	
+	
+	//I want to use JOptionPane to eventually make this process just clicking buttons but I didn't 100% understand it so I'm leaving it alone for now.
+	//I also want to eventually differentiate at the beginning if this is combat or skilling, because I think using 'Random' for max hit, calculating eating, we could calculate how much food you'd need. 
+	
+	
+	System.out.println("\n"+"Which skill are you trying to train right now?");
+	Scanner sc=new Scanner(System.in);
+	String skill=sc.next();
+	
+	System.out.println("What is the interval of this skill?");
+	double interval=sc.nextDouble();		
+			
+	System.out.println("How many different items are used in training this skill?");
+	int resourceCount=sc.nextInt();
+	
+	//I'm really not sure why I had to put =0 here for all of them, but it kept saying they were't initialized later if I didn't. 
+	int resourceOneReq=0, resourceTwoReq=0, resourceThreeReq=0, resourceFourReq=0, resourceOneStored=0, resourceTwoStored=0, resourceThreeStored = 0, resourceFourStored=0;
+	
+	
+	//This beauty of a brick took me 3 hours. 
+	int lowestActionCount1=0,lowestActionCount2=0,lowestActionCountFinal=0;
+	
+	if (resourceCount==1) {
+		System.out.println("For the first item, how many of these items does the recipe require for one action?");
+		resourceOneReq =sc.nextInt();
+		
+		System.out.println("And how many of this resource do you have?");
+		resourceOneStored=sc.nextInt();
+		int resourceOneActionCount=(resourceOneStored / resourceOneReq);
+		lowestActionCountFinal=(resourceOneActionCount);
+	}else if (resourceCount==2) {
+		System.out.println("For the first item, how many of these items does the recipe require for one action?");
+		resourceOneReq =sc.nextInt();
+		
+		System.out.println("And how many of this resource do you have?");
+		resourceOneStored=sc.nextInt();
+		
+		System.out.println("For the second item, how many of these items does the recipe require for one action?");
+		resourceTwoReq=sc.nextInt();
+		System.out.println("And how many of this resource do you have?");
+		resourceTwoStored=sc.nextInt();
+		
+		int resourceOneActionCount=(resourceOneStored / resourceOneReq);
+		int resourceTwoActionCount=(resourceTwoStored / resourceTwoReq);
+		lowestActionCountFinal=Math.min(resourceOneActionCount,resourceTwoActionCount);
+		
+		
+	} else if (resourceCount==3) {
+		System.out.println("For the first item, how many of these items does the recipe require for one action?");
+		resourceOneReq =sc.nextInt();
+		System.out.println("And how many of this resource do you have?");
+		resourceOneStored=sc.nextInt();
+		
+		System.out.println("For the second item, how many of these items does the recipe require for one action?");
+		resourceTwoReq=sc.nextInt();
+		System.out.println("And how many of this resource do you have?");
+		resourceTwoStored=sc.nextInt();
+		System.out.println("For the third item, how many of these items does the recipe require for one action?");
+		resourceThreeReq=sc.nextInt();
+		System.out.println("And how many of this resource do you have?");
+		resourceThreeStored=sc.nextInt();
+		
+		int resourceOneActionCount=(resourceOneStored / resourceOneReq);
+		int resourceTwoActionCount=(resourceTwoStored / resourceTwoReq);
+		int resourceThreeActionCount=(resourceThreeStored / resourceThreeReq);
+		
+		
+		lowestActionCount1=Math.min(resourceThreeActionCount,resourceTwoActionCount);
+		lowestActionCountFinal=Math.min(lowestActionCount1,resourceOneActionCount);
+		
+		
+	} else if (resourceCount==4) {
+		System.out.println("For the first item, how many of these items does the recipe require for one action?");
+		resourceOneReq =sc.nextInt();
+		System.out.println("And how many of this resource do you have?");
+		resourceOneStored=sc.nextInt();
+		System.out.println("For the second item, how many of these items does the recipe require for one action?");
+		resourceTwoReq=sc.nextInt();
+		System.out.println("And how many of this resource do you have?");
+		resourceTwoStored=sc.nextInt();
+		System.out.println("For the third item, how many of these items does the recipe require for one action?");
+		resourceThreeReq=sc.nextInt();
+		System.out.println("And how many of this resource do you have?");
+		resourceThreeStored=sc.nextInt();
+		System.out.println("For the Fourth item, how many of these items does the recipe require for one action?");
+		resourceFourReq=sc.nextInt();
+		System.out.println("And how many of this resource do you have?");
+		resourceFourStored=sc.nextInt();
+		
+		int resourceOneActionCount=(resourceOneStored / resourceOneReq);
+		int resourceTwoActionCount=(resourceTwoStored / resourceTwoReq);
+		int resourceThreeActionCount=(resourceThreeStored / resourceThreeReq);
+		int resourceFourActionCount=(resourceFourStored / resourceFourReq);
+		
+		
+		lowestActionCount1=Math.min(resourceThreeActionCount, resourceFourActionCount);
+		lowestActionCount2=Math.min(resourceOneActionCount, resourceTwoActionCount);
+		lowestActionCountFinal=Math.min(lowestActionCount1, lowestActionCount2);
+		
+		// just in case they put in more than four I tell them to go fuck themselves
+	} else {
+		System.out.println("I'm sorry but this program cannot compute more than four resources needed");
+	}
+	
+	// this is the calculation for the amount of seconds you can skill for
+	double timeRequiredCalculations=lowestActionCountFinal*interval;
+	
+	System.out.println("What is your chance to preserve Resources?");
+	double preserveChance=sc.nextDouble();
+	
+	preserveChance=((preserveChance /100)+1);
+	
+	timeRequiredCalculations= (timeRequiredCalculations * preserveChance);
+	
+	System.out.println("That means you can skill for a total of " + timeRequiredCalculations +" seconds,");
+	System.out.println("Lowest Action Count total:" + lowestActionCountFinal);
+	
+	
+	
+	// this line of code is to establish the ints for the calculations from seconds to hours, minutes.
+	int skillingHours=0, skillingMinutes=0, skillingSeconds=0;
+	
+	
+	// if the time is an hour or more
+	if (timeRequiredCalculations >= 3600) {
+		
+	skillingHours=((int) timeRequiredCalculations / 3600);
+	skillingMinutes=(((int) timeRequiredCalculations / 3600)%60);
+	skillingSeconds=(((int) timeRequiredCalculations /3600)/60);
+	
+	// if the time is less than an hour or
+	} else if (timeRequiredCalculations < 3600) {
+		
+	skillingMinutes=(((int) timeRequiredCalculations /60)%60);
+	skillingSeconds=(((int) timeRequiredCalculations /60)/60);
+		
+	//if it is less than a minute total	
+	} else {
+	skillingSeconds =(int) timeRequiredCalculations;
+	}
+	
+	
+	
+	System.out.println("You can afk "+ skill + " for " + skillingHours+ " hours and " + skillingMinutes+ " minutes, and " + skillingSeconds + " seconds.");
+	
+	sc.close();
+	}
+}
